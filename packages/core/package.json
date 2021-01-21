@@ -1,0 +1,37 @@
+{
+  "name": "core",
+  "version": "0.0.0",
+  "description": "Form library powered by state machines",
+  "keywords": [
+    "form",
+    "data",
+    "statechart",
+    "state",
+    "machine",
+    "field",
+    "input",
+    "analytics",
+    "collection"
+  ],
+  "author": "Joshua Amaju <princejosh0007@gmail.com>",
+  "homepage": "https://github.com/JoshuaAmaju/faumally#readme",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "directories": {
+    "src": "src",
+    "test": "__tests__"
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoshuaAmaju/faumally.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/JoshuaAmaju/faumally/issues"
+  }
+}
