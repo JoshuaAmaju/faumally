@@ -1,6 +1,7 @@
 import pkg from './package.json';
 import {terser} from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
+import {nodeResolve} from '@rollup/plugin-node-resolve';
 
 const external = [...Object.keys (pkg.peerDependencies)];
 
@@ -12,7 +13,7 @@ export default [
       dir: 'es',
       format: 'esm',
     },
-    plugins: [typescript (), terser ()],
+    plugins: [nodeResolve (), typescript (), terser ()],
   },
   {
     external,
@@ -23,6 +24,7 @@ export default [
       file: 'dist/faumally.js',
     },
     plugins: [
+      nodeResolve (),
       typescript ({
         tsconfigOverride: {
           declarations: false,
