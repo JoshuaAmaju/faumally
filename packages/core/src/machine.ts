@@ -1,7 +1,7 @@
 import {assign, createMachine, send, spawn, SpawnedActorRef} from 'xstate';
 import {choose, pure} from 'xstate/lib/actions';
-import createActor from './actor';
-import {Config, FaumRecord} from './types';
+import {createActor} from './actor';
+import {Config, FaumRecord, Schema, ValidationSchema} from './types';
 import {toSchema} from './utils';
 
 export type Context<T, K = unknown> = {
@@ -10,6 +10,7 @@ export type Context<T, K = unknown> = {
   values: FaumRecord<T>;
   type: 'save' | 'submit';
   validatedActors: string[];
+  schema: ValidationSchema<T>;
   errors: Map<keyof T, string>;
   actors: Record<keyof T, SpawnedActorRef<any>>;
 };
@@ -18,7 +19,8 @@ export type SetType<T, K> =
   | {name: 'data'; value: Context<T, K>['data']}
   | {name: 'values'; value: Context<T, K>['values']}
   | {name: 'error'; value: Context<T, K>['error']}
-  | {name: 'errors'; value: Context<T, K>['errors']};
+  | {name: 'errors'; value: Context<T, K>['errors']}
+  | {name: 'schema'; value: ValidationSchema<T>};
 
 export type Events<T, K> =
   | {type: 'BLUR' | 'EDIT'; name: keyof T; value: T[keyof T]}
@@ -26,6 +28,7 @@ export type Events<T, K> =
   | ({type: 'SET'} & SetType<T, K>)
   | {type: 'ACTOR_NO_ERROR'; name: string}
   | {type: 'SAVE'; validate?: boolean}
+  | {type: 'VALIDATE'; name: keyof T}
   | {type: 'SUBMIT'};
 
 export type States<T, K = unknown> =
@@ -35,6 +38,7 @@ export type States<T, K = unknown> =
         | 'validating'
         | 'submitting'
         | 'validatingActors'
+        | 'beforeSave'
         | 'saving'
         | 'saved';
       context: Context<T, K>;
@@ -48,33 +52,34 @@ const allActorsValidated = ({actors, validatedActors}: any) => {
   return validatedActors.length === Object.keys(actors).length;
 };
 
-const createFormMachine = <T, K>({
+export const createFormMachine = <T, K>({
   schema,
   onSave,
   onSubmit,
   validate,
   once = false,
 }: Config<T, K>) => {
-  const values = {} as Context<T, K>['values'];
-
-  Object.keys(schema).forEach((k) => {
-    const key = k as keyof T;
-    const {initialValue} = toSchema(schema[key]);
-    values[key] = initialValue;
-  });
-
   return createMachine<Context<T, K>, Events<T, K>, States<T, K>>(
     {
       id: 'form',
       initial: 'editing',
       context: {
-        values,
         type: 'submit',
         errors: new Map(),
         validatedActors: [],
         actors: {} as Context<T, K>['actors'],
+        values: {} as Context<T, K>['values'],
+        schema: schema ?? ({} as Context<T, K>['schema']),
       },
-      entry: 'spawnActors',
+      entry: [
+        'setInitialValues',
+        choose([
+          {
+            actions: 'spawnActors',
+            cond: () => Boolean(schema),
+          },
+        ]),
+      ],
       on: {
         SET: {
           actions: [
@@ -83,6 +88,10 @@ const createFormMachine = <T, K>({
               {
                 actions: 'sendEditToActors',
                 cond: (_, {name}) => name === 'values',
+              },
+              {
+                cond: (_, {name}) => name === 'schema',
+                actions: ['assignSchema', 'spawnActors'],
               },
             ]),
           ],
@@ -103,16 +112,28 @@ const createFormMachine = <T, K>({
             EDIT: {
               actions: ['sendEditToActor', 'assignValue'],
             },
+            VALIDATE: {
+              actions: 'sendValidateToActor',
+            },
             SUBMIT: 'validatingActors',
-            // SAVE: [
-            //   {
-            //     target: 'validatingActors',
-            //     cond: (_, {validate}) => validate,
-            //     actions: assign({type: (_) => 'save'}),
-            //   },
-            //   {target: 'saving'},
-            // ],
+            SAVE: 'beforeSave',
           },
+
+          // temporary work around for handling varying
+          // transition target
+          always: [
+            {
+              target: 'validatingActors',
+              actions: assign({type: (_) => 'save'}),
+              cond: (_, {type, validate}: any) => {
+                return type === 'SAVE' && validate;
+              },
+            },
+            {
+              target: 'saving',
+              cond: (_, {type}) => type === 'SAVE',
+            },
+          ],
         },
         validatingActors: {
           exit: 'clearMarkedActors',
@@ -133,8 +154,8 @@ const createFormMachine = <T, K>({
                 'markActor',
                 choose([
                   {
-                    actions: 'assignActorError',
                     cond: 'isErrorEvent',
+                    actions: 'assignActorError',
                   },
                   {actions: 'clearActorError'},
                 ]),
@@ -225,6 +246,10 @@ const createFormMachine = <T, K>({
           to: (_, {name}: any) => name,
         }),
 
+        sendValidateToActor: send('VALIDATE', {
+          to: (_, {name}: any) => name,
+        }),
+
         setValue: assign((ctx, {name, value}: any) => {
           return {...ctx, [name]: value};
         }),
@@ -275,7 +300,23 @@ const createFormMachine = <T, K>({
 
         clearMarkedActors: assign((ctx) => ({...ctx, validatedActors: []})),
 
-        spawnActors: assign((ctx) => {
+        assignSchema: assign((ctx, {schema}: any) => {
+          return {...ctx, schema};
+        }),
+
+        setInitialValues: assign(({schema, ...ctx}) => {
+          const values = {} as Context<T, K>['values'];
+
+          Object.keys(schema).forEach((k) => {
+            const key = k as keyof T;
+            const {initialValue} = toSchema(schema[key]);
+            values[key] = initialValue;
+          });
+
+          return {...ctx, values};
+        }),
+
+        spawnActors: assign(({schema, ...ctx}) => {
           const actors = {} as Context<T, K>['actors'];
 
           Object.keys(schema).forEach((key) => {
@@ -308,5 +349,3 @@ const createFormMachine = <T, K>({
     }
   );
 };
-
-export default createFormMachine;

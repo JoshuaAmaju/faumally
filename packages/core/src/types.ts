@@ -13,7 +13,7 @@ export type ValidationSchema<T> = {[K in keyof T]: string | Schema<T[K]>};
 export type Config<T, K> = {
   once?: boolean;
   autoSave?: boolean;
-  schema: ValidationSchema<T>;
+  schema?: ValidationSchema<T>;
   onSubmit(values: FaumRecord<T>): Promise<K>;
   onSave?: (values: FaumRecord<T>) => void | Promise<void>;
   validate?: (values: MaybeFaumRecord<T>) => Record<keyof T, string> | void;

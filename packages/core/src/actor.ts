@@ -12,7 +12,7 @@ type Events<T> =
 
 type States<T> = {value: 'editing' | 'validating'; context: Context<T>};
 
-const createActor = <T>(
+export const createActor = <T>(
   name: string,
   {validate, required, initialValue}: Schema<T>
 ) => {
@@ -86,5 +86,3 @@ const createActor = <T>(
     }
   );
 };
-
-export default createActor;

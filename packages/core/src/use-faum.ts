@@ -1,5 +1,5 @@
 import {interpret} from 'xstate';
-import createFormMachine, {Context, Events, SetType} from './machine';
+import {createFormMachine, Context, Events, SetType} from './machine';
 import {Config, StorageAdapter} from './types';
 
 type SubscriberHelpers<T> = {
@@ -13,7 +13,7 @@ type SubscriberHelpers<T> = {
 };
 
 type Subscriber<T> = (
-  config: Omit<Context<T>, 'type' | 'actors' | 'validatedActors'> &
+  config: Omit<Context<T>, 'type' | 'actors' | 'schema' | 'validatedActors'> &
     SubscriberHelpers<T>
 ) => void;
 
@@ -24,7 +24,7 @@ type Handlers<T> = {
   };
 };
 
-export default function useFaum<T = any, K = unknown>({
+export function useFaum<T = any, K = unknown>({
   autoSave = false,
   storageAdapter = localStorage as StorageAdapter,
   ...config
@@ -111,19 +111,24 @@ export default function useFaum<T = any, K = unknown>({
     service.send({type: 'EDIT', name, value});
   };
 
-  const handlers = {} as Handlers<T>;
+  const generateHandlers = () => {
+    const handlers = {} as Handlers<T>;
+    const {schema: _schema} = service.state.context;
 
-  Object.keys(config.schema).forEach((key) => {
-    const _key = key as keyof T;
+    Object.keys(config.schema ?? _schema).forEach((key) => {
+      const _key = key as keyof T;
 
-    (handlers as any)[_key] = {
-      // @ts-ignore
-      onBlur: onBlur.bind(null, _key),
+      (handlers as any)[_key] = {
+        // @ts-ignore
+        onBlur: onBlur.bind(null, _key),
 
-      // @ts-ignore
-      onChange: onChange.bind(null, _key),
-    };
-  });
+        // @ts-ignore
+        onChange: onChange.bind(null, _key),
+      };
+    });
+
+    return handlers;
+  };
 
   service.start();
 
@@ -141,8 +146,8 @@ export default function useFaum<T = any, K = unknown>({
     onBlur,
     service,
     onChange,
-    handlers,
     subscribe,
     restoreState,
+    handlers: generateHandlers(),
   };
 }
