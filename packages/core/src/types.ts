@@ -23,4 +23,5 @@ export type StorageAdapter = {
   removeItem(key: string): void | Promise<void>;
   getItem(key: string): string | Promise<string>;
   setItem(key: string, value: string): void | Promise<void>;
+  [name: string]: any;
 };
