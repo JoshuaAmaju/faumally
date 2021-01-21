@@ -22,16 +22,27 @@
     "test": "__tests__"
   },
   "files": [
-    "src"
+    "dist",
+    "es"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JoshuaAmaju/faumally.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
   },
   "bugs": {
     "url": "https://github.com/JoshuaAmaju/faumally/issues"
+  },
+  "devDependencies": {
+    "rollup": "^2.37.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "xstate": "^4.16.0"
+  },
+  "peerDependencies": {
+    "xstate": "^4.16.0"
   }
 }
