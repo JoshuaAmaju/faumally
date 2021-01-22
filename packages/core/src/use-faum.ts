@@ -19,8 +19,9 @@ type Subscriber<T> = (
 
 type Handlers<T> = {
   [K in keyof T]: {
-    onBlur(value: T[K]): void;
-    onChange(value: T[K]): void;
+    validate(): void;
+    onBlur(value: T[K] | null): void;
+    onChange(value: T[K] | null): void;
   };
 };
 
@@ -103,11 +104,15 @@ export function useFaum<T = any, K = unknown>({
     service.send({type: 'SAVE', validate});
   };
 
-  const onBlur = <K extends keyof T>(name: K, value: T[K]) => {
+  const validate = (name: keyof T) => {
+    service.send({type: 'VALIDATE', name});
+  };
+
+  const onBlur = <K extends keyof T>(name: K, value: T[K] | null) => {
     service.send({type: 'BLUR', name, value});
   };
 
-  const onChange = <K extends keyof T>(name: K, value: T[K]) => {
+  const onChange = <K extends keyof T>(name: K, value: T[K] | null) => {
     service.send({type: 'EDIT', name, value});
   };
 
@@ -124,6 +129,8 @@ export function useFaum<T = any, K = unknown>({
 
         // @ts-ignore
         onChange: onChange.bind(null, _key),
+
+        validate: validate.bind(null, _key),
       };
     });
 
@@ -145,6 +152,7 @@ export function useFaum<T = any, K = unknown>({
     submit,
     onBlur,
     service,
+    validate,
     onChange,
     subscribe,
     restoreState,

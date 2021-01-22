@@ -23,7 +23,7 @@ export type SetType<T, K> =
   | {name: 'schema'; value: ValidationSchema<T>};
 
 export type Events<T, K> =
-  | {type: 'BLUR' | 'EDIT'; name: keyof T; value: T[keyof T]}
+  | {type: 'BLUR' | 'EDIT'; name: keyof T; value: T[keyof T] | null}
   | {type: 'ACTOR_ERROR'; name: keyof T; error: string}
   | ({type: 'SET'} & SetType<T, K>)
   | {type: 'ACTOR_NO_ERROR'; name: string}
@@ -38,7 +38,6 @@ export type States<T, K = unknown> =
         | 'validating'
         | 'submitting'
         | 'validatingActors'
-        | 'beforeSave'
         | 'saving'
         | 'saved';
       context: Context<T, K>;
@@ -116,24 +115,24 @@ export const createFormMachine = <T, K>({
               actions: 'sendValidateToActor',
             },
             SUBMIT: 'validatingActors',
-            SAVE: 'beforeSave',
+            // SAVE: 'beforeSave',
           },
 
           // temporary work around for handling varying
           // transition target
-          always: [
-            {
-              target: 'validatingActors',
-              actions: assign({type: (_) => 'save'}),
-              cond: (_, {type, validate}: any) => {
-                return type === 'SAVE' && validate;
-              },
-            },
-            {
-              target: 'saving',
-              cond: (_, {type}) => type === 'SAVE',
-            },
-          ],
+          // always: [
+          //   {
+          //     target: 'validatingActors',
+          //     actions: assign({type: (_) => 'save'}),
+          //     cond: (_, {type, validate}: any) => {
+          //       return type === 'SAVE' && validate;
+          //     },
+          //   },
+          //   {
+          //     target: 'saving',
+          //     cond: (_, {type}) => type === 'SAVE',
+          //   },
+          // ],
         },
         validatingActors: {
           exit: 'clearMarkedActors',
