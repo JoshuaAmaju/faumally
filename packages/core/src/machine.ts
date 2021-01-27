@@ -1,8 +1,16 @@
-import {assign, createMachine, send, spawn, SpawnedActorRef} from 'xstate';
-import {choose, pure} from 'xstate/lib/actions';
+import {
+  assign,
+  createMachine,
+  actions,
+  send,
+  spawn,
+  SpawnedActorRef,
+} from 'xstate';
 import {createActor} from './actor';
-import {Config, FaumRecord, Schema, ValidationSchema} from './types';
+import {Config, FaumRecord, ValidationSchema} from './types';
 import {toSchema} from './utils';
+
+const {choose, pure} = actions;
 
 export type Context<T, K = unknown> = {
   data?: K;
