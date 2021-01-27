@@ -17,10 +17,6 @@
   "homepage": "https://github.com/JoshuaAmaju/faumally#readme",
   "license": "MIT",
   "main": "src/index.ts",
-  "directories": {
-    "src": "src",
-    "test": "__tests__"
-  },
   "files": [
     "dist",
     "es"
