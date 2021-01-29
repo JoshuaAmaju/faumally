@@ -41,9 +41,6 @@
   "bugs": {
     "url": "https://github.com/JoshuaAmaju/faumally/issues"
   },
-  "publishConfig": {
-    "registry": "http://localhost:4873/"
-  },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^11.1.0",
     "@types/jest": "^26.0.20",
@@ -57,5 +54,6 @@
   },
   "peerDependencies": {
     "xstate": "^4.16.0"
-  }
+  },
+  "gitHead": "8865943583426ce2c097a418d4ce0b72bc8fe2ee"
 }

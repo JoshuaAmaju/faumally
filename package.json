@@ -9,8 +9,8 @@
   "description": "Form library powered by state machines",
   "scripts": {
     "lerna:version": "lerna version",
-    "lerna:publish": "lerna publish",
     "lerna:bootstrap": "lerna bootstrap",
+    "lerna:publish": "lerna publish from-package --registry http://localhost:4873/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
