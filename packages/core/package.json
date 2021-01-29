@@ -37,7 +37,6 @@
     "preversion": "pnpm run test",
     "prepublish": "pnpm run build",
     "build": "pnpm run clean && rollup -c",
-    "postversion": "git push --follow-tags"
   },
   "bugs": {
     "url": "https://github.com/JoshuaAmaju/faumally/issues"
