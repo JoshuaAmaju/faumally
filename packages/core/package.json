@@ -19,7 +19,7 @@
   "main": "src/index.ts",
   "directories": {
     "src": "src",
-    "test": "__tests__"
+    "test": "tests"
   },
   "files": [
     "dist",
@@ -32,14 +32,18 @@
   "scripts": {
     "test": "jest",
     "dev": "rollup -c -w",
+    "clean": "rimraf dist es",
     "version": "pnpm run build",
     "preversion": "pnpm run test",
-    "prepublishOnly": "pnpm run build",
+    "prepublish": "pnpm run build",
     "build": "pnpm run clean && rollup -c",
     "postversion": "git push --follow-tags"
   },
   "bugs": {
     "url": "https://github.com/JoshuaAmaju/faumally/issues"
+  },
+  "publishConfig": {
+    "registry": "http://localhost:4873/"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^11.1.0",
