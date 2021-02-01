@@ -22,7 +22,7 @@ export default [
       name: "Faumally",
       file: "dist/faumally.js",
       globals: {
-        xstate: "xstate",
+        xstate: "XState",
       },
     },
     plugins: [
