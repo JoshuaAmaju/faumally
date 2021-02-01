@@ -1,34 +1,38 @@
-import pkg from './package.json';
-import {terser} from 'rollup-plugin-terser';
-import typescript from 'rollup-plugin-typescript2';
+import { terser } from "rollup-plugin-terser";
+import typescript from "rollup-plugin-typescript2";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
 
-const external = [...Object.keys (pkg.peerDependencies)];
+const external = ["xstate"];
 
 export default [
   {
     external,
-    input: 'src/index.ts',
+    input: "src/index.ts",
     output: {
-      dir: 'es',
-      format: 'esm',
+      dir: "es",
+      format: "esm",
     },
-    plugins: [typescript (), terser ()],
+    plugins: [nodeResolve(), typescript(), terser()],
   },
   {
     external,
-    input: 'src/index.ts',
+    input: "src/index.ts",
     output: {
-      format: 'iife',
-      name: 'Faumally',
-      file: 'dist/faumally.js',
+      format: "iife",
+      name: "Faumally",
+      file: "dist/faumally.js",
+      globals: {
+        xstate: "XState",
+      },
     },
     plugins: [
-      typescript ({
+      nodeResolve(),
+      typescript({
         tsconfigOverride: {
           declarations: false,
         },
       }),
-      terser (),
+      terser(),
     ],
   },
 ];
