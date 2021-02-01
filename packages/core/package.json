@@ -1,5 +1,5 @@
 {
-  "name": "core",
+  "name": "faumally",
   "version": "0.0.0",
   "description": "Form library powered by state machines",
   "keywords": [
@@ -19,7 +19,7 @@
   "main": "src/index.ts",
   "directories": {
     "src": "src",
-    "test": "__tests__"
+    "test": "tests"
   },
   "files": [
     "dist",
@@ -32,11 +32,11 @@
   "scripts": {
     "test": "jest",
     "dev": "rollup -c -w",
+    "clean": "rimraf dist es",
     "version": "pnpm run build",
     "preversion": "pnpm run test",
-    "prepublishOnly": "pnpm run build",
-    "build": "pnpm run clean && rollup -c",
-    "postversion": "git push --follow-tags"
+    "prepublish": "pnpm run build",
+    "build": "pnpm run clean && rollup -c"
   },
   "bugs": {
     "url": "https://github.com/JoshuaAmaju/faumally/issues"
@@ -54,5 +54,6 @@
   },
   "peerDependencies": {
     "xstate": "^4.16.0"
-  }
+  },
+  "gitHead": "1ead4732ac5cf67dae08c6c76263e49fd7e85ac7"
 }

@@ -1,6 +1,6 @@
-import {interpret} from 'xstate';
-import {createFormMachine, Context, Events, SetType} from './machine';
-import {Config, StorageAdapter} from './types';
+import { interpret } from "xstate";
+import { createFormMachine, Context, Events, SetType } from "./machine";
+import { Config, StorageAdapter } from "./types";
 
 type SubscriberHelpers<T> = {
   saved: boolean;
@@ -13,7 +13,7 @@ type SubscriberHelpers<T> = {
 };
 
 type Subscriber<T> = (
-  config: Omit<Context<T>, 'type' | 'actors' | 'schema' | 'validatedActors'> &
+  config: Omit<Context<T>, "type" | "actors" | "schema" | "validatedActors"> &
     SubscriberHelpers<T>
 ) => void;
 
@@ -29,8 +29,8 @@ export function useFaum<T = any, K = unknown>({
   autoSave = false,
   storageAdapter = localStorage as StorageAdapter,
   ...config
-}: Config<T, K> & {storageAdapter?: StorageAdapter}) {
-  const id = '$form';
+}: Config<T, K> & { storageAdapter?: StorageAdapter }) {
+  const id = "$form";
   const service = interpret(createFormMachine<T, K>(config));
 
   const getEvents = async () => {
@@ -41,29 +41,29 @@ export function useFaum<T = any, K = unknown>({
   const subscribe = (callback: Subscriber<T>) => {
     service.onTransition(async (state) => {
       const {
-        context: {data, values, error, errors},
+        context: { data, values, error, errors },
       } = state;
 
       const hasErrors = errors.size > 0;
 
-      const isSaving = state.matches('saving');
-      const isSubmitting = state.matches('submitting');
+      const isSaving = state.matches("saving");
+      const isSubmitting = state.matches("submitting");
 
       const hasError = (name: keyof T) => errors.has(name);
 
       const attemptedSaveOrSubmit =
-        state.matches('editing') &&
-        (state.history?.matches('validatingActors') ||
-          state.history?.matches('validating'));
+        state.matches("editing") &&
+        (state.history?.matches("validatingActors") ||
+          state.history?.matches("validating"));
 
       const saved =
-        state.matches('editing') && state.history?.matches('saving')
+        state.matches("editing") && state.history?.matches("saving")
           ? true
           : false;
 
       const submitted =
-        state.matches('submitted') ||
-        (state.matches('editing') && state.history?.matches('submitting'))
+        state.matches("submitted") ||
+        (state.matches("editing") && state.history?.matches("submitting"))
           ? true
           : false;
 
@@ -82,10 +82,10 @@ export function useFaum<T = any, K = unknown>({
       });
 
       const {
-        event: {type},
+        event: { type },
       } = state;
 
-      if (autoSave && state.changed && (type === 'BLUR' || type === 'EDIT')) {
+      if (autoSave && state.changed && (type === "BLUR" || type === "EDIT")) {
         const events = await getEvents();
         storageAdapter.setItem(id, JSON.stringify(events.concat(state.event)));
       }
@@ -93,32 +93,32 @@ export function useFaum<T = any, K = unknown>({
   };
 
   const submit = () => {
-    service.send('SUBMIT');
+    service.send("SUBMIT");
   };
 
   const set = (values: SetType<T, K>) => {
-    service.send({type: 'SET', ...values});
+    service.send({ type: "SET", ...values });
   };
 
   const save = (validate?: boolean) => {
-    service.send({type: 'SAVE', validate});
+    service.send({ type: "SAVE", validate });
   };
 
   const validate = (name: keyof T) => {
-    service.send({type: 'VALIDATE', name});
+    service.send({ type: "VALIDATE", name });
   };
 
   const onBlur = <K extends keyof T>(name: K, value: T[K] | null) => {
-    service.send({type: 'BLUR', name, value});
+    service.send({ type: "BLUR", name, value });
   };
 
   const onChange = <K extends keyof T>(name: K, value: T[K] | null) => {
-    service.send({type: 'EDIT', name, value});
+    service.send({ type: "EDIT", name, value });
   };
 
   const generateHandlers = () => {
     const handlers = {} as Handlers<T>;
-    const {schema: _schema} = service.state.context;
+    const { schema: _schema } = service.state.context;
 
     Object.keys(config.schema ?? _schema).forEach((key) => {
       const _key = key as keyof T;

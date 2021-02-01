@@ -1,6 +1,6 @@
-export type FaumRecord<T> = {[K in keyof T]: T[K]};
+export type FaumRecord<T> = { [K in keyof T]: T[K] };
 
-export type MaybeFaumRecord<T> = {[K in keyof T]: T[K] | undefined};
+export type MaybeFaumRecord<T> = { [K in keyof T]: T[K] | undefined };
 
 export type Schema<T> = {
   initialValue?: T;
@@ -8,7 +8,7 @@ export type Schema<T> = {
   validate?: (value: T | undefined) => string | void;
 };
 
-export type ValidationSchema<T> = {[K in keyof T]: string | Schema<T[K]>};
+export type ValidationSchema<T> = { [K in keyof T]: string | Schema<T[K]> };
 
 export type Config<T, K> = {
   once?: boolean;
