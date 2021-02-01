@@ -94,6 +94,18 @@ export namespace t {
     };
   };
 
+  export const has = <T extends Map<string, unknown>>(ref: any) => (
+    ...validators: SchemaValidator<T[]>[]
+  ): UnCurriedSchemaValidator<T> => {
+    return (key, value) => {
+      const msg = invoke(key, value, validators);
+
+      throwError(msg ?? `${toLabel(key)} should contain ${ref}`)(
+        !value.has(ref)
+      );
+    };
+  };
+
   export const schema = <T>(shape: Schema<T>) => {
     return (values: FaumRecord<T>) => {
       const errors = {} as any;
@@ -120,11 +132,11 @@ export namespace t {
 }
 
 type T = {
-  email: string[];
+  email: Map<string, string>;
 };
 
 const validate = t.schema<T>({
-  email: t.includes('name'),
+  email: t.has('name'),
 });
 
-console.log(validate({email: []}));
+console.log(validate({email: new Map([['hjdk', 'gh']])}));
