@@ -1,28 +1,30 @@
-// export default function useForm<T, K = unknown>(config: Config<T, K>) {
-//   const {
-//     current: {service, ...rest},
-//   } = useRef(_useForm(config));
+import { useFaum } from 'faumally'
 
-//   const [state] = useService(service) as any;
+export default function useFaumally<T, K = unknown>(config: Config<T, K>) {
+  const {
+    current: {service, ...rest},
+  } = useRef(_useForm(config));
 
-//   const {
-//     context: {data, values, errors, error},
-//   } = state;
+  const [state] = useService(service) as any;
 
-//   const hasErrors = errors.size > 0;
+  const {
+    context: {data, values, errors, error},
+  } = state;
 
-//   const isSubmitting = state.matches('submitting');
+  const hasErrors = errors.size > 0;
 
-//   const hasError = (name: keyof T) => errors.has(name);
+  const isSubmitting = state.matches('submitting');
 
-//   return {
-//     ...rest,
-//     data,
-//     error,
-//     values,
-//     errors,
-//     hasError,
-//     hasErrors,
-//     isSubmitting,
-//   };
-// }
+  const hasError = (name: keyof T) => errors.has(name);
+
+  return {
+    ...rest,
+    data,
+    error,
+    values,
+    errors,
+    hasError,
+    hasErrors,
+    isSubmitting,
+  };
+}

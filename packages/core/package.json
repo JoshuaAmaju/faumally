@@ -16,14 +16,17 @@
   "author": "Joshua Amaju <princejosh0007@gmail.com>",
   "homepage": "https://github.com/JoshuaAmaju/faumally#readme",
   "license": "MIT",
-  "main": "src/index.ts",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "src": "src",
     "test": "tests"
   },
   "files": [
     "dist",
-    "es"
+    "es",
+    "lib"
   ],
   "repository": {
     "type": "git",
