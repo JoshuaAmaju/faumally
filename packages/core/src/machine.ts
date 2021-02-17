@@ -78,15 +78,12 @@ export const createFormMachine = <T, K>({
         values: {} as Context<T, K>['values'],
         schema: schema ?? ({} as Context<T, K>['schema']),
       },
-      entry: [
-        'setInitialValues',
-        choose([
-          {
-            actions: 'spawnActors',
-            cond: () => Boolean(schema),
-          },
-        ]),
-      ],
+      entry: choose([
+        {
+          actions: ['spawnActors', 'setInitialValues'],
+          cond: () => Object.keys(schema ?? {}).length > 0,
+        },
+      ]),
       on: {
         SET: {
           actions: [
@@ -97,8 +94,8 @@ export const createFormMachine = <T, K>({
                 cond: (_, {name}) => name === 'values',
               },
               {
-                actions: 'spawnActors',
                 cond: (_, {name}) => name === 'schema',
+                actions: ['spawnActors', 'setInitialValues'],
               },
             ]),
           ],
@@ -258,8 +255,6 @@ export const createFormMachine = <T, K>({
         }),
 
         setValue: assign((ctx, {name, value}: any) => {
-          console.log('machine', name, value);
-
           return {...ctx, [name]: value};
         }),
 

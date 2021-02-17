@@ -45,6 +45,8 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^11.2.0",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.7.1",
     "@types/jest": "^26.0.20",
     "@types/react": "^17.0.2",
     "@xstate/react": "^1.2.2",

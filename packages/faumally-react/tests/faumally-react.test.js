@@ -1,7 +1,10 @@
-'use strict';
+import React from 'react';
+import {render, screen} from '@testing-library/react';
 
-const faumallyReact = require('..');
+const TestForm = () => {
+  return <div />;
+};
 
-describe('faumally-react', () => {
-    it('needs tests');
+test ('initialize component', () => {
+  render (<TestForm />);
 });

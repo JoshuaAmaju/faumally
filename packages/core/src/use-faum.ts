@@ -97,8 +97,6 @@ export function useFaum<T = any, K = unknown>({
   };
 
   const set = (values: SetType<T, K>) => {
-    console.log('set', values);
-
     service.send({type: 'SET', ...values});
   };
 
