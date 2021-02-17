@@ -258,6 +258,8 @@ export const createFormMachine = <T, K>({
         }),
 
         setValue: assign((ctx, {name, value}: any) => {
+          console.log('machine', name, value);
+
           return {...ctx, [name]: value};
         }),
 
