@@ -320,8 +320,10 @@ export const createFormMachine = <T, K>({
           return {...ctx, values};
         }),
 
-        spawnActors: assign(({schema, ...ctx}) => {
+        spawnActors: assign(({schema, ...ctx}, {name, value}: any) => {
           const actors = {} as Context<T, K>['actors'];
+
+          console.log('spawn actors', schema, name, value);
 
           Object.keys(schema).forEach((key) => {
             const _key = key as keyof T;
