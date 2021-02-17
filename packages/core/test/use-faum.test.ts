@@ -122,7 +122,7 @@ describe('form machine wrapper', () => {
     });
   });
 
-  it('set schema dynamically', (done) => {
+  it('set schema/bulk values dynamically', (done) => {
     const {set, subscribe, service} = useFaum({
       storageAdapter,
       schema: {} as any,
