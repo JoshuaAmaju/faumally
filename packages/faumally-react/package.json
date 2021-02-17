@@ -13,12 +13,16 @@
   "author": "Joshua Amaju <princejosh0007@gmail.com>",
   "homepage": "https://github.com/JoshuaAmaju/faumally/tree/master/packages/faumally-react#readme",
   "license": "MIT",
-  "main": "src/index.ts",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
   },
   "files": [
+    "dist",
+    "es",
     "lib"
   ],
   "repository": {
@@ -31,7 +35,17 @@
   "bugs": {
     "url": "https://github.com/JoshuaAmaju/faumally/issues"
   },
-  "dependencies": {
-    "faumally": "link:..\\core"
+  "devDependencies": {
+    "@types/react": "^17.0.2",
+    "@xstate/react": "^1.2.2",
+    "react": "^17.0.1",
+    "xstate": "^4.16.2",
+    "faumally": "^0.0.0"
+  },
+  "peerDependencies": {
+    "faumally": "^0.0.0",
+    "@xstate/react": "^1.2.2",
+    "react": "^17.0.1",
+    "xstate": "^4.16.2"
   }
 }
