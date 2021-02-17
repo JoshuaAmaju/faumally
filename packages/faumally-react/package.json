@@ -1,6 +1,6 @@
 {
   "name": "@faumally/react",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "React form library based on state machines",
   "keywords": [
     "react",
