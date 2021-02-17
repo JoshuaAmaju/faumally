@@ -4,13 +4,13 @@ import {useFaum, Config} from 'faumally';
 
 export default function useFaumally<T, K = unknown>(config: Config<T, K>) {
   const {
-    current: {service, ...rest},
+    current: {service, generateHandlers, ...rest},
   } = useRef(useFaum(config));
 
   const [state] = useService(service);
 
   const {
-    context: {data, values, errors, error},
+    context: {data, values, errors, error, schema},
   } = state;
 
   const hasErrors = errors.size > 0;
@@ -19,7 +19,7 @@ export default function useFaumally<T, K = unknown>(config: Config<T, K>) {
 
   const hasError = (name: keyof T) => errors.has(name);
 
-  // const handlers = useMemo(genera);
+  const handlers = useMemo(generateHandlers, [schema]);
 
   return {
     ...rest,
@@ -28,6 +28,7 @@ export default function useFaumally<T, K = unknown>(config: Config<T, K>) {
     values,
     errors,
     hasError,
+    handlers,
     hasErrors,
     isSubmitting,
   };
