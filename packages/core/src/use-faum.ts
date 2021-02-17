@@ -156,6 +156,7 @@ export function useFaum<T = any, K = unknown>({
     onChange,
     subscribe,
     restoreState,
+    generateHandlers,
     handlers: generateHandlers(),
   };
 }
