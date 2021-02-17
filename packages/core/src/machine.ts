@@ -97,8 +97,8 @@ export const createFormMachine = <T, K>({
                 cond: (_, {name}) => name === 'values',
               },
               {
+                actions: 'spawnActors',
                 cond: (_, {name}) => name === 'schema',
-                actions: ['assignSchema', 'spawnActors'],
               },
             ]),
           ],
@@ -307,9 +307,9 @@ export const createFormMachine = <T, K>({
 
         clearMarkedActors: assign((ctx) => ({...ctx, validatedActors: []})),
 
-        assignSchema: assign((ctx, {schema}: any) => {
-          return {...ctx, schema};
-        }),
+        // assignSchema: assign((ctx, {value}: any) => {
+        //   return {...ctx, schema: value};
+        // }),
 
         setInitialValues: assign(({schema, ...ctx}) => {
           const values = {} as Context<T, K>['values'];
