@@ -25,6 +25,10 @@
     "es",
     "lib"
   ],
+  "publishConfig": {
+    "tag": "newV",
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JoshuaAmaju/faumally.git"
