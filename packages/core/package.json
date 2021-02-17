@@ -1,6 +1,6 @@
 {
   "name": "faumally",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Form library powered by state machines",
   "keywords": [
     "form",
