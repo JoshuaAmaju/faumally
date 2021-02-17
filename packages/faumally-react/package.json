@@ -1,6 +1,6 @@
 {
   "name": "@faumally/react",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "React form library based on state machines",
   "keywords": [
     "react",
@@ -41,13 +41,13 @@
   "devDependencies": {
     "@types/react": "^17.0.2",
     "@xstate/react": "^1.2.2",
+    "faumally": "^0.0.1",
     "react": "^17.0.1",
-    "xstate": "^4.16.2",
-    "faumally": "^0.0.0"
+    "xstate": "^4.16.2"
   },
   "peerDependencies": {
-    "faumally": "^0.0.0",
     "@xstate/react": "^1.2.2",
+    "faumally": "^0.0.0",
     "react": "^17.0.1",
     "xstate": "^4.16.2"
   }
