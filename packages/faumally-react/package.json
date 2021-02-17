@@ -31,16 +31,7 @@
   "bugs": {
     "url": "https://github.com/JoshuaAmaju/faumally/issues"
   },
-  "devDependencies": {
-    "@xstate/react": "^1.2.2",
-    "faumally": "^0.0.0",
-    "react": "^17.0.1",
-    "xstate": "^4.16.0"
-  },
-  "peerDependencies": {
-    "@xstate/react": "^1.2.2",
-    "faumally": "^0.0.0",
-    "react": "^17.0.1",
-    "xstate": "^4.16.0"
+  "dependencies": {
+    "faumally": "link:..\\core"
   }
 }

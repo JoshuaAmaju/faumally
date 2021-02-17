@@ -4,14 +4,6 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 
 const external = ["xstate"];
 
-const createTsPlugin = ({ declaration = true } = {}) => {
-  return typescript({
-    tsconfigOverride: {
-      compilerOptions: { declaration },
-    },
-  });
-};
-
 export default [
   {
     external,
@@ -20,7 +12,7 @@ export default [
       dir: "es",
       format: "esm",
     },
-    plugins: [nodeResolve(), createTsPlugin(), terser()],
+    plugins: [nodeResolve(), typescript(), terser()],
   },
   {
     external,
@@ -33,6 +25,14 @@ export default [
         xstate: "XState",
       },
     },
-    plugins: [nodeResolve(), createTsPlugin({ declaration: false }), terser()],
+    plugins: [
+      nodeResolve(),
+      typescript({
+        tsconfigOverride: {
+          declarations: false,
+        },
+      }),
+      terser(),
+    ],
   },
 ];

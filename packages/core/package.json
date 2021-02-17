@@ -35,11 +35,11 @@
   "scripts": {
     "test": "jest",
     "dev": "rollup -c -w",
-    "clean": "rimraf dist es",
     "version": "pnpm run build",
     "preversion": "pnpm run test",
     "prepublish": "pnpm run build",
-    "build": "pnpm run clean && rollup -c"
+    "build": "pnpm run clean && tsc && rollup -c",
+    "clean": "rimraf dist es lib tsconfig.tsbuildinfo"
   },
   "bugs": {
     "url": "https://github.com/JoshuaAmaju/faumally/issues"

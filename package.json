@@ -10,8 +10,7 @@
   "scripts": {
     "lerna:version": "lerna version",
     "lerna:bootstrap": "lerna bootstrap",
-    "lerna:publish": "lerna publish from-package --registry http://localhost:4873/",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lerna:publish": "lerna publish from-package --registry http://localhost:4873/"
   },
   "repository": {
     "type": "git",
