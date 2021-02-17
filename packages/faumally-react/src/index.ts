@@ -1,4 +1,4 @@
-import {useRef} from 'react';
+import {useRef, useMemo} from 'react';
 import {useService} from '@xstate/react';
 import {useFaum, Config} from 'faumally';
 
@@ -18,6 +18,8 @@ export default function useFaumally<T, K = unknown>(config: Config<T, K>) {
   const isSubmitting = state.matches('submitting');
 
   const hasError = (name: keyof T) => errors.has(name);
+
+  // const handlers = useMemo(genera);
 
   return {
     ...rest,
