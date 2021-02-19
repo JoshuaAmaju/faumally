@@ -9,7 +9,7 @@ export default function useFaumally<T, K = unknown>(config: Config<T, K>) {
 
   const [state] = useService(service);
 
-  const context = _getContext(state);
+  const context = useMemo(() => _getContext(state), [state]);
 
   const handlers = useMemo(generateHandlers, [config.schema]);
 
