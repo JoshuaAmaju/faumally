@@ -1,27 +1,19 @@
-import {useRef, useMemo} from 'react';
-import {useService} from '@xstate/react';
-import {useFaum, Config} from 'faumally';
+import {State} from 'xstate';
+import {Context, Events, States} from './machine';
 
-export default function useFaumally<T, K = unknown>(config: Config<T, K>) {
+export default function getContext<T, K>(
+  state: State<Context<T, K>, Events<T, K>, any, States<T, K>>
+) {
   const {
-    current: {service, generateHandlers, ...rest},
-  } = useRef(useFaum(config));
-
-  const [state] = useService(service);
-
-  const {
-    context: {data, values, errors, error, schema},
+    context: {data, values, error, errors},
   } = state;
 
   const hasErrors = errors.size > 0;
 
   const isSaving = state.matches('saving');
-
   const isSubmitting = state.matches('submitting');
 
   const hasError = (name: keyof T) => errors.has(name);
-
-  const handlers = useMemo(generateHandlers, [schema]);
 
   const attemptedSaveOrSubmit =
     state.matches('editing') &&
@@ -38,18 +30,15 @@ export default function useFaumally<T, K = unknown>(config: Config<T, K>) {
       : false;
 
   return {
-    ...rest,
     data,
     error,
     saved,
-    values,
     errors,
-    service,
+    values,
     hasError,
-    handlers,
     isSaving,
-    submitted,
     hasErrors,
+    submitted,
     isSubmitting,
     attemptedSaveOrSubmit,
   };

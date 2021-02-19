@@ -1,6 +1,7 @@
 import {interpret} from 'xstate';
-import {createFormMachine, Context, Events, SetType} from './machine';
+import {Context, createFormMachine, Events, SetType} from './machine';
 import {Config, StorageAdapter} from './types';
+import getContext from './get-context';
 
 type SubscriberHelpers<T> = {
   saved: boolean;
@@ -40,46 +41,7 @@ export default function Faumally<T = any, K = unknown>({
 
   const subscribe = (callback: Subscriber<T>) => {
     service.onTransition(async (state) => {
-      const {
-        context: {data, values, error, errors},
-      } = state;
-
-      const hasErrors = errors.size > 0;
-
-      const isSaving = state.matches('saving');
-      const isSubmitting = state.matches('submitting');
-
-      const hasError = (name: keyof T) => errors.has(name);
-
-      const attemptedSaveOrSubmit =
-        state.matches('editing') &&
-        (state.history?.matches('validatingActors') ||
-          state.history?.matches('validating'));
-
-      const saved =
-        state.matches('editing') && state.history?.matches('saving')
-          ? true
-          : false;
-
-      const submitted =
-        state.matches('submitted') ||
-        (state.matches('editing') && state.history?.matches('submitting'))
-          ? true
-          : false;
-
-      callback({
-        data,
-        error,
-        saved,
-        errors,
-        values,
-        hasError,
-        isSaving,
-        hasErrors,
-        submitted,
-        isSubmitting,
-        attemptedSaveOrSubmit,
-      });
+      callback(getContext(state));
 
       const {
         event: {type},
