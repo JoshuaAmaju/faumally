@@ -1,4 +1,4 @@
-import {StorageAdapter, Config, useFaum} from '../src';
+import {StorageAdapter, Config, Faumally} from '../src';
 import {Interpreter} from 'xstate';
 
 type Faum = {
@@ -24,18 +24,18 @@ const schema: Config<Faum, any> = {
 
 describe('form machine wrapper', () => {
   it('verify returned service instance', () => {
-    const {service} = useFaum({...schema, storageAdapter});
+    const {service} = Faumally({...schema, storageAdapter});
     expect(service).toBeInstanceOf(Interpreter);
   });
 
   it('verify returned form handlers', () => {
-    const {handlers} = useFaum({...schema, storageAdapter});
+    const {handlers} = Faumally({...schema, storageAdapter});
     expect(handlers).toMatchObject({name: {}});
   });
 
   describe('form data handling', () => {
     it('values object should contain item name with value Joe', (done) => {
-      const {handlers, subscribe} = useFaum({...schema, storageAdapter});
+      const {handlers, subscribe} = Faumally({...schema, storageAdapter});
 
       handlers.name.onBlur('Joe');
 
@@ -47,7 +47,7 @@ describe('form machine wrapper', () => {
     });
 
     it('errors object should contain name', (done) => {
-      const {handlers, service} = useFaum({
+      const {handlers, service} = Faumally({
         ...schema,
         storageAdapter,
       });
@@ -65,7 +65,7 @@ describe('form machine wrapper', () => {
 
   describe('form submission', () => {
     it('form submission data should be 1234', (done) => {
-      const {submit, onChange, service} = useFaum({
+      const {submit, onChange, service} = Faumally({
         ...schema,
         storageAdapter,
         onSubmit() {
@@ -85,7 +85,7 @@ describe('form machine wrapper', () => {
     });
 
     it('form submission should resolve with error', (done) => {
-      const {submit, onChange, service} = useFaum({
+      const {submit, onChange, service} = Faumally({
         ...schema,
         storageAdapter,
         onSubmit() {
@@ -105,7 +105,7 @@ describe('form machine wrapper', () => {
     });
 
     it('form should submit only once', (done) => {
-      const {submit, onChange, service} = useFaum({
+      const {submit, onChange, service} = Faumally({
         ...schema,
         once: true,
         storageAdapter,
@@ -123,7 +123,7 @@ describe('form machine wrapper', () => {
   });
 
   it('set schema/bulk values dynamically', (done) => {
-    const {set, subscribe, service} = useFaum({
+    const {set, subscribe, service} = Faumally({
       storageAdapter,
       schema: {} as any,
       onSubmit: schema.onSubmit,
