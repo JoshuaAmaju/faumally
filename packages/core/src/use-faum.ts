@@ -25,7 +25,7 @@ type Handlers<T> = {
   };
 };
 
-export function useFaum<T = any, K = unknown>({
+export default function Faumally<T = any, K = unknown>({
   autoSave = false,
   storageAdapter = localStorage as StorageAdapter,
   ...config
@@ -92,6 +92,14 @@ export function useFaum<T = any, K = unknown>({
     });
   };
 
+  const start = () => {
+    service.start();
+  };
+
+  const stop = () => {
+    service.stop();
+  };
+
   const submit = () => {
     service.send('SUBMIT');
   };
@@ -137,7 +145,7 @@ export function useFaum<T = any, K = unknown>({
     return handlers;
   };
 
-  service.start();
+  start();
 
   const restoreState = async () => {
     const events = await getEvents();
@@ -149,6 +157,8 @@ export function useFaum<T = any, K = unknown>({
   return {
     set,
     save,
+    stop,
+    start,
     submit,
     onBlur,
     service,

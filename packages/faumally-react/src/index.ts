@@ -27,6 +27,7 @@ export default function useFaumally<T, K = unknown>(config: Config<T, K>) {
     error,
     values,
     errors,
+    service,
     hasError,
     handlers,
     hasErrors,

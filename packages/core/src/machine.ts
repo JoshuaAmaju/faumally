@@ -103,6 +103,7 @@ export const createFormMachine = <T, K>({
       },
       states: {
         editing: {
+          entry: assign((ctx) => ({...ctx, type: 'submit'})),
           on: {
             ACTOR_ERROR: {
               actions: 'assignActorError',
@@ -140,9 +141,14 @@ export const createFormMachine = <T, K>({
           // ],
         },
         validatingActors: {
+          // empty the container that keeps track of
+          // actors when validation starts due to a submit event
           exit: 'clearMarkedActors',
           entry: 'sendValidateToActors',
           always: [
+            // if validation of every actor is done and
+            // one or more responds with an error, don't
+            // submit
             {
               target: 'editing',
               cond: 'allActorsValidatedAndHasErrors',
@@ -153,6 +159,8 @@ export const createFormMachine = <T, K>({
             },
           ],
           on: {
+            // wait and check every actor for validation
+            // response when submit event is fired.
             '*': {
               actions: [
                 'markActor',
@@ -161,6 +169,8 @@ export const createFormMachine = <T, K>({
                     cond: 'isErrorEvent',
                     actions: 'assignActorError',
                   },
+                  // if the actor doesn't respond with an error,
+                  // remove it from the errors Map.
                   {actions: 'clearActorError'},
                 ]),
               ],
@@ -320,10 +330,8 @@ export const createFormMachine = <T, K>({
           return {...ctx, values};
         }),
 
-        spawnActors: assign(({schema, ...ctx}, {name, value}: any) => {
+        spawnActors: assign(({schema, ...ctx}) => {
           const actors = {} as Context<T, K>['actors'];
-
-          console.log('spawn actors', schema, name, value);
 
           Object.keys(schema).forEach((key) => {
             const _key = key as keyof T;
