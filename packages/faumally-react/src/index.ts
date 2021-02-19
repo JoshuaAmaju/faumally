@@ -3,9 +3,9 @@ import {useService} from '@xstate/react';
 import {Faumally, Config, _getContext} from 'faumally';
 
 export default function useFaumally<T, K = unknown>(config: Config<T, K>) {
-  const {
-    current: {service, generateHandlers, ...rest},
-  } = useRef(Faumally(config));
+  const {service, generateHandlers, ...rest} = useRef(
+    Faumally<T, K>(config)
+  ).current;
 
   const [state] = useService(service);
 
