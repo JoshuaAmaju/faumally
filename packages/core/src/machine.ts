@@ -78,15 +78,12 @@ export const createFormMachine = <T, K>({
         values: {} as Context<T, K>['values'],
         schema: schema ?? ({} as Context<T, K>['schema']),
       },
-      entry: [
-        'setInitialValues',
-        choose([
-          {
-            actions: 'spawnActors',
-            cond: () => Boolean(schema),
-          },
-        ]),
-      ],
+      entry: choose([
+        {
+          actions: ['spawnActors', 'setInitialValues'],
+          cond: () => Object.keys(schema ?? {}).length > 0,
+        },
+      ]),
       on: {
         SET: {
           actions: [
@@ -98,7 +95,7 @@ export const createFormMachine = <T, K>({
               },
               {
                 cond: (_, {name}) => name === 'schema',
-                actions: ['assignSchema', 'spawnActors'],
+                actions: ['spawnActors', 'setInitialValues'],
               },
             ]),
           ],
@@ -106,6 +103,7 @@ export const createFormMachine = <T, K>({
       },
       states: {
         editing: {
+          entry: assign((ctx) => ({...ctx, type: 'submit'})),
           on: {
             ACTOR_ERROR: {
               actions: 'assignActorError',
@@ -143,9 +141,14 @@ export const createFormMachine = <T, K>({
           // ],
         },
         validatingActors: {
+          // empty the container that keeps track of
+          // actors when validation starts due to a submit event
           exit: 'clearMarkedActors',
           entry: 'sendValidateToActors',
           always: [
+            // if validation of every actor is done and
+            // one or more responds with an error, don't
+            // submit
             {
               target: 'editing',
               cond: 'allActorsValidatedAndHasErrors',
@@ -156,6 +159,8 @@ export const createFormMachine = <T, K>({
             },
           ],
           on: {
+            // wait and check every actor for validation
+            // response when submit event is fired.
             '*': {
               actions: [
                 'markActor',
@@ -164,6 +169,8 @@ export const createFormMachine = <T, K>({
                     cond: 'isErrorEvent',
                     actions: 'assignActorError',
                   },
+                  // if the actor doesn't respond with an error,
+                  // remove it from the errors Map.
                   {actions: 'clearActorError'},
                 ]),
               ],
@@ -307,9 +314,9 @@ export const createFormMachine = <T, K>({
 
         clearMarkedActors: assign((ctx) => ({...ctx, validatedActors: []})),
 
-        assignSchema: assign((ctx, {schema}: any) => {
-          return {...ctx, schema};
-        }),
+        // assignSchema: assign((ctx, {value}: any) => {
+        //   return {...ctx, schema: value};
+        // }),
 
         setInitialValues: assign(({schema, ...ctx}) => {
           const values = {} as Context<T, K>['values'];

@@ -1,6 +1,6 @@
 {
   "name": "faumally",
-  "version": "0.0.0",
+  "version": "0.0.14",
   "description": "Form library powered by state machines",
   "keywords": [
     "form",
@@ -35,7 +35,6 @@
   "scripts": {
     "test": "jest",
     "dev": "rollup -c -w",
-    "version": "pnpm run build",
     "preversion": "pnpm run test",
     "prepublish": "pnpm run build",
     "build": "pnpm run clean && tsc && rollup -c",

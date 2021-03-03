@@ -1,7 +1,13 @@
-import { useFaum } from "./use-faum";
-import { createActor } from "./actor";
-import { createFormMachine } from "./machine";
+import Faumally from './Faumally';
+import {createActor} from './actor';
+import {createFormMachine} from './machine';
+import _getContext from './get-context';
 
-export type { Config, Schema, ValidationSchema, StorageAdapter } from "./types";
+export type {Config, Schema, ValidationSchema, StorageAdapter} from './types';
 
-export { useFaum, createActor, createFormMachine };
+export {
+  Faumally,
+  _getContext,
+  createActor as _createActor,
+  createFormMachine as _createFormMachine,
+};
