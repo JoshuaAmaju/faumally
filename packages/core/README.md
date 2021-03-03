@@ -1,5 +1,11 @@
 # `Faumally`
 
+## Install
+
+```bash
+pnpm add faumally xstate
+```
+
 ## Usage
 
 ```typescript
@@ -59,8 +65,8 @@ subscribe(({data, error, errors, values, submit, isSubmitting, attemptedSaveOrSu
 
 ```typescript
 const form = document.querySelector('form');
-const age = form.querySelector('.age');
 const email = form.querySelector('.email');
+const age = form.querySelector('.age');
 ...
 
 age.addEventListener('input', ({target: {value}}) => {
