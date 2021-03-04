@@ -1,11 +1,57 @@
 0 silly argv {
-0 silly argv   _: [ 'publish' ],
-0 silly argv   composed: 'publish',
+0 silly argv   _: [ 'version' ],
 0 silly argv   lernaVersion: '3.22.1',
-0 silly argv   '$0': 'node_modules\\lerna\\cli.js'
+0 silly argv   '$0': 'node_modules/lerna/cli.js'
 0 silly argv }
 1 notice cli v3.22.1
-2 verbose rootPath C:\Users\POLARIS\Desktop\Workspace\Personal\libraries\faumally
-3 error JSONError: Unexpected token } in JSON at position 903 while parsing near '...n && rollup -c",  },  "bugs": {   ...' in packages\core\package.json
-3 error     at module.exports (C:\Users\POLARIS\Desktop\Workspace\Personal\libraries\faumally\node_modules\parse-json\index.js:26:19)
-3 error     at parse (C:\Users\POLARIS\Desktop\Workspace\Personal\libraries\faumally\node_modules\load-json-file\index.js:15:9)
+2 verbose rootPath /Users/software/Desktop/Joshua/faumally
+3 info current version 0.0.14
+4 silly isAnythingCommitted
+5 verbose isAnythingCommitted 1
+6 silly currentBranch
+7 verbose currentBranch core-doc
+8 silly remoteBranchExists
+9 silly isBehindUpstream
+10 silly isBehindUpstream core-doc is behind origin/core-doc by 0 commit(s) and ahead by 0
+11 silly hasTags
+12 verbose hasTags true
+13 silly git-describe.sync "c19aee5" => {"refCount":"74","sha":"c19aee5","isDirty":false}
+14 info Assuming all packages changed
+15 verbose updated faumally
+16 verbose updated @faumally/react
+17 info version rooted leaf detected, skipping synthetic root lifecycles
+18 verbose git-describe undefined => "c19aee5"
+19 silly git-describe parsed => {"refCount":"74","sha":"c19aee5","isDirty":false}
+20 info execute Skipping releases
+21 silly lifecycle "preversion" starting in "faumally"
+22 info lifecycle faumally@0.0.14~preversion: faumally@0.0.14
+23 verbose lifecycle faumally@0.0.14~preversion: unsafe-perm in lifecycle true
+24 verbose lifecycle faumally@0.0.14~preversion: PATH: /Users/software/Desktop/Joshua/faumally/node_modules/.pnpm/npm-lifecycle@3.1.5/node_modules/npm-lifecycle/node-gyp-bin:/Users/software/Desktop/Joshua/faumally/packages/core/node_modules/.bin:/usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/software/Desktop/Joshua/faumally/node_modules/.bin:/Users/software/.rvm/gems/ruby-2.7.1/bin:/Users/software/.rvm/gems/ruby-2.7.1@global/bin:/Users/software/.rvm/rubies/ruby-2.7.1/bin:/opt/anaconda3/bin:/opt/anaconda3/condabin:/Users/software/.pyenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/software/.rvm/bin:/Users/software/Library/Android/sdk/emulator:/Users/software/Library/Android/sdk/tools:/Users/software/Library/Android/sdk/tools/bin:/Users/software/Library/Android/sdk/platform-tools
+25 verbose lifecycle faumally@0.0.14~preversion: CWD: /Users/software/Desktop/Joshua/faumally/packages/core
+26 silly lifecycle faumally@0.0.14~preversion: Args: [ '-c', 'pnpm run test' ]
+27 silly lifecycle faumally@0.0.14~preversion: Returned: code: 0  signal: null
+28 silly lifecycle "preversion" finished in "faumally"
+29 silly lifecycle No script for "version" in "faumally", continuing
+30 silly lifecycle No script for "preversion" in "@faumally/react", continuing
+31 silly lifecycle No script for "version" in "@faumally/react", continuing
+32 silly gitAdd [
+32 silly gitAdd   'packages/core/package.json',
+32 silly gitAdd   'packages/core/package-lock.json',
+32 silly gitAdd   'packages/faumally-react/package.json',
+32 silly gitAdd   'packages/faumally-react/package-lock.json',
+32 silly gitAdd   'lerna.json'
+32 silly gitAdd ]
+33 silly gitCommit v0.0.15
+34 verbose git [ 'commit', '-m', 'v0.0.15' ]
+35 silly gitTag v0.0.15
+36 verbose git [ 'tag', 'v0.0.15', '-m', 'v0.0.15' ]
+37 silly lifecycle No script for "postversion" in "faumally", continuing
+38 silly lifecycle No script for "postversion" in "@faumally/react", continuing
+39 info git Pushing tags...
+40 silly gitPush origin core-doc
+41 error Error: Command failed: git push --follow-tags --no-verify --atomic origin core-doc
+41 error remote: Invalid username or password.
+41 error fatal: Authentication failed for 'https://github.com/JoshuaAmaju/faumally.git/'
+41 error
+41 error     at makeError (/Users/software/Desktop/Joshua/faumally/node_modules/.pnpm/execa@1.0.0/node_modules/execa/index.js:174:9)
+41 error     at /Users/software/Desktop/Joshua/faumally/node_modules/.pnpm/execa@1.0.0/node_modules/execa/index.js:278:16

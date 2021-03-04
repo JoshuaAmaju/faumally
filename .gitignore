@@ -4,3 +4,4 @@ es
 lib
 pnpm-lock.yaml
 tsconfig.tsbuildinfo
+lerna-debug.log
