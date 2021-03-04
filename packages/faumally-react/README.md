@@ -9,7 +9,7 @@ pnpm add faumally xstate @faumally/react @xstate/react
 ## Usage
 
 ```typescript
-import {useFaumally} from '@faumally/react';
+import useFaumally from '@faumally/react';
 
 function App() {
   const {
