@@ -49,12 +49,12 @@ function App() {
         <div>
           <input
             type="text"
-            name="name"
+            name="firstName"
             onChange={({target: {value}}) => {
-              handlers.name.onChange(value);
+              handlers.firstName.onChange(value);
             }}
           />
-          {errors.has('name') && <p>{errors.get('name')}</p>}
+          {errors.has('firstName') && <p>{errors.get('firstName')}</p>}
         </div>
         <div>
           <input
@@ -66,6 +66,7 @@ function App() {
           />
           {errors.has('email') && <p>{errors.get('email')}</p>}
         </div>
+        ...
       </form>
     </div>
   );
