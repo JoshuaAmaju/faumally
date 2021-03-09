@@ -79,5 +79,6 @@
   },
   "dependencies": {
     "faumally": "^0.0.15"
-  }
+  },
+  "gitHead": "b49f248cc79579bf28009e87a9a988a3359e7847"
 }
