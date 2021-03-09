@@ -1,24 +1,21 @@
 import { useRef, useMemo } from "react";
 import { useService } from "@xstate/react";
+import { Faumally, Config, _getContext } from "faumally";
 
-export const fn = () => {};
+export default function useFaumally<T, K = unknown>(config: Config<T, K>) {
+  const { service, generateHandlers, ...rest } = useRef(
+    Faumally<T, K>(config)
+  ).current;
 
-// import {Faumally, Config, _getContext} from 'faumally';
+  const [state] = useService(service);
 
-// export default function useFaumally<T, K = unknown>(config: Config<T, K>) {
-//   const {service, generateHandlers, ...rest} = useRef(
-//     Faumally<T, K>(config)
-//   ).current;
+  const context = useMemo(() => _getContext(state), [state]);
 
-//   const [state] = useService(service);
+  const handlers = useMemo(generateHandlers, [config.schema]);
 
-//   const context = useMemo(() => _getContext(state), [state]);
-
-//   const handlers = useMemo(generateHandlers, [config.schema]);
-
-//   return {
-//     ...rest,
-//     ...context,
-//     handlers,
-//   };
-// }
+  return {
+    ...rest,
+    ...context,
+    handlers,
+  };
+}
