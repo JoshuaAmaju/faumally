@@ -12,7 +12,7 @@ export default [
       dir: 'es',
       format: 'esm',
     },
-    plugins: [nodeResolve (), typescript () /** terser() */],
+    plugins: [nodeResolve (), typescript (), terser()],
   },
   {
     external,
@@ -32,7 +32,7 @@ export default [
           declarations: false,
         },
       }),
-      // terser(),
+      terser(),
     ],
   },
 ];

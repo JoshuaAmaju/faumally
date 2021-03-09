@@ -15,7 +15,7 @@ export default [
     plugins: [
       nodeResolve (),
       typescript (),
-      // terser ()
+      terser ()
     ],
   },
   {
@@ -37,7 +37,7 @@ export default [
           declarations: false,
         },
       }),
-      // terser (),
+      terser (),
     ],
   },
 ];
