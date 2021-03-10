@@ -1,6 +1,6 @@
 {
   "name": "@faumally/react",
-  "version": "0.0.16",
+  "version": "0.1.0-alpha.0",
   "description": "React form library based on state machines",
   "keywords": [
     "react",
@@ -78,7 +78,7 @@
     "xstate": "^4.16.2"
   },
   "dependencies": {
-    "faumally": "^0.0.16"
+    "faumally": "^0.1.0-alpha.0"
   },
   "gitHead": "82bebd23cdca45bbb3628d9788de7c8cf8a0a634"
 }
