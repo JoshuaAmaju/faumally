@@ -1,6 +1,7 @@
 {
   "name": "@faumally/react",
   "version": "0.1.0-alpha.0",
+  "private": false,
   "description": "React form library based on state machines",
   "keywords": [
     "react",
@@ -70,6 +71,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.29.0",
     "ts-jest": "^26.5.1",
+    "typescript": "^4.2.3",
     "xstate": "^4.16.2"
   },
   "peerDependencies": {
@@ -80,5 +82,5 @@
   "dependencies": {
     "faumally": "^0.1.0-alpha.0"
   },
-  "gitHead": "26957c281d89e31d052300195de7be7a2832ad58"
+  "gitHead": "81f6c7704c50853d7233e58c0ce9ab60ffadc523"
 }
