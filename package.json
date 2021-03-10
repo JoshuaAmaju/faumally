@@ -13,7 +13,7 @@
     "start:registry": "verdaccio",
     "lerna:version": "lerna version",
     "lerna:bootstrap": "lerna bootstrap",
-    "lerna:publish": "lerna publish from-package --registry http://localhost:4873/"
+    "lerna:publish": "lerna publish"
   },
   "repository": {
     "type": "git",
