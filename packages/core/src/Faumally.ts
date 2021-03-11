@@ -32,12 +32,12 @@ export default function Faumally<T = any, K = unknown>({
   ...config
 }: Config<T, K> & { storageAdapter?: StorageAdapter }) {
   const id = "$form";
-  const adapter = storageAdapter ?? window?.localStorage;
   const service = interpret(createFormMachine<T, K>(config));
 
   const getEvents = async () => {
-    const _events = await adapter?.getItem(id);
-    return JSON.parse(_events ?? "[]") as Events<T, K>[];
+    if (!storageAdapter) return [];
+    const _events = await storageAdapter.getItem(id);
+    return JSON.parse(_events) as Events<T, K>[];
   };
 
   const subscribe = (callback: Subscriber<T>) => {
@@ -48,9 +48,14 @@ export default function Faumally<T = any, K = unknown>({
         event: { type },
       } = state;
 
-      if (autoSave && state.changed && (type === "BLUR" || type === "EDIT")) {
+      if (
+        autoSave &&
+        state.changed &&
+        (type === "BLUR" || type === "EDIT") &&
+        storageAdapter
+      ) {
         const events = await getEvents();
-        adapter?.setItem(id, JSON.stringify(events.concat(state.event)));
+        storageAdapter.setItem(id, JSON.stringify(events.concat(state.event)));
       }
     });
   };
