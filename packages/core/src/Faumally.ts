@@ -1,7 +1,7 @@
-import {interpret} from 'xstate';
-import {Context, createFormMachine, Events, SetType} from './machine';
-import {Config, StorageAdapter} from './types';
-import getContext from './get-context';
+import { interpret } from "xstate";
+import { Context, createFormMachine, Events, SetType } from "./machine";
+import { Config, StorageAdapter } from "./types";
+import getContext from "./get-context";
 
 type SubscriberHelpers<T> = {
   saved: boolean;
@@ -14,7 +14,7 @@ type SubscriberHelpers<T> = {
 };
 
 type Subscriber<T> = (
-  config: Omit<Context<T>, 'type' | 'actors' | 'schema' | 'validatedActors'> &
+  config: Omit<Context<T>, "type" | "actors" | "schema" | "validatedActors"> &
     SubscriberHelpers<T>
 ) => void;
 
@@ -28,15 +28,16 @@ type Handlers<T> = {
 
 export default function Faumally<T = any, K = unknown>({
   autoSave = false,
-  storageAdapter = localStorage as StorageAdapter,
+  storageAdapter,
   ...config
-}: Config<T, K> & {storageAdapter?: StorageAdapter}) {
-  const id = '$form';
+}: Config<T, K> & { storageAdapter?: StorageAdapter }) {
+  const id = "$form";
+  const adapter = storageAdapter ?? window?.localStorage;
   const service = interpret(createFormMachine<T, K>(config));
 
   const getEvents = async () => {
-    const _events = await storageAdapter.getItem(id);
-    return (JSON.parse(_events) ?? []) as Events<T, K>[];
+    const _events = await adapter?.getItem(id);
+    return JSON.parse(_events ?? "[]") as Events<T, K>[];
   };
 
   const subscribe = (callback: Subscriber<T>) => {
@@ -44,12 +45,12 @@ export default function Faumally<T = any, K = unknown>({
       callback(getContext(state));
 
       const {
-        event: {type},
+        event: { type },
       } = state;
 
-      if (autoSave && state.changed && (type === 'BLUR' || type === 'EDIT')) {
+      if (autoSave && state.changed && (type === "BLUR" || type === "EDIT")) {
         const events = await getEvents();
-        storageAdapter.setItem(id, JSON.stringify(events.concat(state.event)));
+        adapter?.setItem(id, JSON.stringify(events.concat(state.event)));
       }
     });
   };
@@ -63,32 +64,32 @@ export default function Faumally<T = any, K = unknown>({
   };
 
   const submit = () => {
-    service.send('SUBMIT');
+    service.send("SUBMIT");
   };
 
   const set = (values: SetType<T, K>) => {
-    service.send({type: 'SET', ...values});
+    service.send({ type: "SET", ...values });
   };
 
   const save = (validate?: boolean) => {
-    service.send({type: 'SAVE', validate});
+    service.send({ type: "SAVE", validate });
   };
 
   const validate = (name: keyof T) => {
-    service.send({type: 'VALIDATE', name});
+    service.send({ type: "VALIDATE", name });
   };
 
   const onBlur = <K extends keyof T>(name: K, value: T[K] | null) => {
-    service.send({type: 'BLUR', name, value});
+    service.send({ type: "BLUR", name, value });
   };
 
   const onChange = <K extends keyof T>(name: K, value: T[K] | null) => {
-    service.send({type: 'EDIT', name, value});
+    service.send({ type: "EDIT", name, value });
   };
 
   const generateHandlers = () => {
     const handlers = {} as Handlers<T>;
-    const {schema: _schema} = service.state.context;
+    const { schema: _schema } = service.state.context;
 
     Object.keys(config.schema ?? _schema).forEach((key) => {
       const _key = key as keyof T;
