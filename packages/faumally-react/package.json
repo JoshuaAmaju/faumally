@@ -58,6 +58,7 @@
     "babel-jest": "^26.6.3",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
+    "faumally": "^0.1.2-alpha.0",
     "jest": "^26.6.3",
     "jest-environment-enzyme": "^7.1.2",
     "jest-enzyme": "^7.1.2",
@@ -75,11 +76,9 @@
   },
   "peerDependencies": {
     "@xstate/react": "^1.2.2",
+    "faumally": "^0.1.2-alpha.0",
     "react": "^17.0.1",
     "xstate": "^4.16.2"
-  },
-  "dependencies": {
-    "faumally": "^0.1.2-alpha.0"
   },
   "gitHead": "ebd557f4179f8fb0b0a155fad5b347b858c82ff8"
 }
